@@ -1,0 +1,18 @@
+{
+	"name": "Neovim-config-helper",
+	"version": "1.0.0-alpha",
+	"description": "A user friendly Neovim config builder that writes configs in Lua",
+	"type": "module",
+	"scripts": {
+		"build": "npx tsc",
+		"launch": "node build/index.js",
+		"dev": "clear ; pnpm run build ; pnpm run launch"
+	},
+	"keywords": [],
+	"author": "lily",
+	"license": "ISC",
+	"packageManager": "pnpm@10.17.1",
+	"devDependencies": {
+		"@types/node": "^24.6.1"
+	}
+}
