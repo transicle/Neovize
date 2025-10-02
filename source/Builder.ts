@@ -8,7 +8,7 @@ export class Builder {
 	): Object {
 		const name = !config.includes(".json") ? `${config}.json` : config;
 
-		if (!fileExists(path([name]))) write("{ }", ["configs", name]);
+		if (!fileExists(path(["configs", name]))) write("{ }", ["configs", name]);
 		return JSON.parse(fetchContent(["configs", name]));
 	}
 
@@ -28,9 +28,12 @@ export class Builder {
 		data: Object
 	) {
 		if (Object.keys(data).length === 0) {
-			console.log("invalid config");
+			console.log("~ Your config cannot be empty ~");
+			console.log("~ Add at least one thing before pushing changes.\n");
 		} else {
-			console.log("valid config");
+			for (const configItem of Object.keys(data)) {
+				console.log(configItem);
+			}
 		}
 	}
 
