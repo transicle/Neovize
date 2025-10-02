@@ -1,3 +1,10 @@
+/*
+
+	      Neovize ~ A JavaScript Neovim configuration handler
+	~ Support us on GitHub @ https://github.com/transicle/Neovize ~
+
+*/
+
 import { fetchContent, fileExists, path, write } from "./fileManager.js";
 import { init, overrideAutoCommand } from "./Vim.js";
 
@@ -29,22 +36,31 @@ export class Builder {
 		data: Object
 	) {
 		if (Object.keys(data).length === 0) {
-			console.log("~ Your config cannot be empty ~");
-			console.log("~ Add at least one thing before pushing changes.\n");
+			console.log("[!] Your config cannot be empty. ~");
+			console.log("[!] Add at least one thing before pushing changes.\n");
 		} else {
+			console.log("[/] Building new Neovize configuration ...");
+
 			const supportedKeys = [
 				"launchermessage"
 			]
 
 			for (const [key, value] of Object.entries(data)) {
 				if (supportedKeys.includes(key.toLowerCase())) {
+					console.log(`[/] Updating "${key}" ...`);
 					switch (key.toLowerCase()) {
 						case "launchermessage":
 							this.updateNeovimOutput(overrideAutoCommand("\"VimEnter\"", `print(\"${value}\")`));
+							console.log(`[!] Set "${key}" key to "${value}".`);
+							break;
+						case "dashboardmessage":
 							break;
 					}
 				}
 			}
+
+			console.log("[~] Neovize configuration built. :)");
+			console.log("[!] Your old configuration has been cached to the \"configs\" folder in Neovize.");
 		}
 	}
 
@@ -62,9 +78,27 @@ export class Builder {
 
 	// Constructor
 
+	/**
+	 * 
+	 * Changes the message you see in the commandline when you first launch Neovim.
+	 * 
+	 * @warning This does **not** change the main default message! Use **changeDashboardMessage** for that.
+	 */
 	changeLauncherMessage(
 		content: string
 	) {
 		this.updateConfig(["launcherMessage", content]);
+	}
+
+	/**
+	 * 
+	 * Changes the dashboard (center) message you see when launching Neovim.
+	 * 
+	 * @note Uses the **`alpha.nvim`** package! No install is necessary.
+	 */
+	changeDashboardMessage(
+		content: string
+	) {
+		this.updateConfig(["dashboardMessage", content]);
 	}
 }

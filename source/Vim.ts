@@ -1,6 +1,41 @@
-import { fetchContent } from "./fileManager.js";
+import { readdirSync, rmSync } from "node:fs";
+import {
+    changeDirectory, copyDirectory, fetchContent,
+    fileExists, newFolder, path
+} from "./fileManager.js";
+import { homedir } from "node:os";
+import { append } from "./utility.js";
 
-export const init = ["example", "init.lua"]; // Example config for now
+function fetchNeovimConfigPath(): string[] {
+    return [homedir(), ".config", "nvim"];
+}
+
+function saveOldConfig() {
+    const preservedTime = Date.now();
+    const folderName = `Neovize-Config-${preservedTime}`;
+    const oldPath = [homedir(), ".config", "nvim", folderName];
+
+    newFolder(oldPath);
+    readdirSync(path(fetchNeovimConfigPath())).forEach(item => {
+        const filePath = path(append(fetchNeovimConfigPath(), item));
+        if (filePath !== path(oldPath)) {
+            if (fileExists(filePath)) {
+                changeDirectory(append(fetchNeovimConfigPath(), item), append(oldPath, item));
+            }
+        }
+    });
+
+    copyDirectory(oldPath, [process.cwd(), "configs", folderName]);
+    rmSync(path(oldPath), {
+        force: true,
+        recursive: true
+    });
+}
+
+saveOldConfig();
+
+export const init = ["example", "init.lua"]; // Example config
+// export const init = fetchNeovimConfigPath().push("init.lua");
 
 // Auto Commands
 /**
