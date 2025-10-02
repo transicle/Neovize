@@ -25,18 +25,22 @@ export function newAutoCommand(
 
 /**
  * 
- * Searches 
+ * Searches through your **`init.lua`** for Neovim and overrides any matching Auto Commands
+ *  with the information you provide.
+ * 
+ * @warning This function isn't designed to be called outside of the Neovim config builder!
+ * @warning The **callback** argument must be a string with Lua code.
  */
 export function overrideAutoCommand(
     autoCommand: string,
     callback: string
 ): string {
-    const regex = new RegExp(`vim\\.api\\.nvim_create_autocmd\\(\\s*${autoCommand}\\s*, \\s*\\{`, "m");
     const content = fetchContent(init);
-    if (regex.test(fetchContent(init))) {
-        return content.replace(regex, (_, beforeCallback, __, afterCallback) => {
-            return `${beforeCallback}    ${callback}\n${afterCallback}`;
-        });;
+    const regex = new RegExp(`vim\\.api\\.nvim_create_autocmd\\(\\s*${autoCommand}\\s*,\\s*{[\\s\\S]*?callback\\s*=\\s*function\\([^)]*\\)[\\s\\S]*?end[\\s\\S]*?}\\)`, "m");
+    if (regex.test(content)) {
+        return content.replace(regex, (match) => {
+            return match.replace(/callback\s*=\s*function\([^)]*\)[\s\S]*?end/, `callback = function()\n        ${callback}\n    end`);
+        });
     } else {
         return newAutoCommand(autoCommand, callback);
     }

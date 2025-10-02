@@ -2,5 +2,5 @@ import { Builder } from "./Builder.js";
 
 const ConfigBuilder = new Builder();
 
-ConfigBuilder.changeLauncherMessage("hello :3");
+ConfigBuilder.changeLauncherMessage("uwu");
 ConfigBuilder.buildConfig(ConfigBuilder.fetchSavedConfig());
