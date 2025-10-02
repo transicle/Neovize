@@ -5,12 +5,11 @@
 
 */
 
-import { fetchContent, fileExists, path, write } from "./fileManager.js";
-import { init, overrideAutoCommand } from "./Vim.js";
+import { fetchContent, fileExists, path, write } from "../fileManager.js";
+import { init, overrideAutoCommand, saveOldConfig } from "../Vim.js";
+import { Dashboard } from "./Dashboard.js";
 
 export class Builder {
-	// Config Manager
-	
 	fetchSavedConfig(
 		config: string = "editingConfig"
 	): Object {
@@ -39,6 +38,7 @@ export class Builder {
 			console.log("[!] Your config cannot be empty. ~");
 			console.log("[!] Add at least one thing before pushing changes.\n");
 		} else {
+			saveOldConfig();
 			console.log("[/] Building new Neovize configuration ...");
 
 			const supportedKeys = [
@@ -60,7 +60,6 @@ export class Builder {
 			}
 
 			console.log("[~] Neovize configuration built. :)");
-			console.log("[!] Your old configuration has been cached to the \"configs\" folder in Neovize.");
 		}
 	}
 
@@ -76,8 +75,11 @@ export class Builder {
 		write(currentSource, init, true);
 	}
 
-	// Constructor
+	// Bigger configurations
 
+	DashboardController = Dashboard;
+
+	// Small configurations, no extra classes needed.
 	/**
 	 * 
 	 * Changes the message you see in the commandline when you first launch Neovim.
@@ -88,17 +90,5 @@ export class Builder {
 		content: string
 	) {
 		this.updateConfig(["launcherMessage", content]);
-	}
-
-	/**
-	 * 
-	 * Changes the dashboard (center) message you see when launching Neovim.
-	 * 
-	 * @note Uses the **`alpha.nvim`** package! No install is necessary.
-	 */
-	changeDashboardMessage(
-		content: string
-	) {
-		this.updateConfig(["dashboardMessage", content]);
 	}
 }

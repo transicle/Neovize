@@ -73,7 +73,7 @@ export function copyDirectory(
 
 	const items = readdirSync(path(previousPath));
 	items.forEach(value => {
-		if (lstatSync(path(previousPath)).isDirectory()) {
+		if (lstatSync(path(append(previousPath, value))).isDirectory()) {
 			copyDirectory(append(previousPath, value), append(newPath, value));
 		} else {
 			copyFileSync(path(append(previousPath, value)), path(append(newPath, value)));

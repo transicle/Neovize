@@ -10,10 +10,17 @@ function fetchNeovimConfigPath(): string[] {
     return [homedir(), ".config", "nvim"];
 }
 
-function saveOldConfig() {
+export function saveOldConfig() {
+    if (readdirSync(path(fetchNeovimConfigPath())).length === 0) {
+        console.log("[!] No previous config to save.")
+        return;
+    }
+
+    console.log("[/] Saving previous config ...");
     const preservedTime = Date.now();
     const folderName = `Neovize-Config-${preservedTime}`;
     const oldPath = [homedir(), ".config", "nvim", folderName];
+    const finalPath = [process.cwd(), "configs", folderName];
 
     newFolder(oldPath);
     readdirSync(path(fetchNeovimConfigPath())).forEach(item => {
@@ -25,17 +32,16 @@ function saveOldConfig() {
         }
     });
 
-    copyDirectory(oldPath, [process.cwd(), "configs", folderName]);
+    copyDirectory(oldPath, finalPath);
     rmSync(path(oldPath), {
         force: true,
         recursive: true
     });
+
+    console.log(`[~] Saved previous config to "${path(finalPath)}".`);
 }
 
-saveOldConfig();
-
-export const init = ["example", "init.lua"]; // Example config
-// export const init = fetchNeovimConfigPath().push("init.lua");
+export const init = append(fetchNeovimConfigPath(), "init.lua");
 
 // Auto Commands
 /**
