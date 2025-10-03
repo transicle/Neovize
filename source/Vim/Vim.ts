@@ -2,9 +2,9 @@ import { readdirSync, rmSync } from "node:fs";
 import {
     changeDirectory, copyDirectory, fetchContent,
     fileExists, newFolder, path
-} from "./fileManager.js";
+} from "../fileManager.js";
 import { homedir } from "node:os";
-import { append } from "./utility.js";
+import { append } from "../utility.js";
 
 function fetchNeovimConfigPath(): string[] {
     return [homedir(), ".config", "nvim"];

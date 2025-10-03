@@ -14,5 +14,8 @@
 	"packageManager": "pnpm@10.17.1",
 	"devDependencies": {
 		"@types/node": "^24.6.1"
+	},
+	"dependencies": {
+		"figlet": "^1.9.3"
 	}
 }

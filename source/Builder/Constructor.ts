@@ -6,31 +6,31 @@
 */
 
 import { fetchContent, fileExists, path, write } from "../fileManager.js";
-import { init, overrideAutoCommand, saveOldConfig } from "../Vim.js";
+import { init, overrideAutoCommand, saveOldConfig } from "../Vim/Vim.js";
 import { Dashboard } from "./Dashboard.js";
 
+export function fetchSavedConfig(
+	config: string = "editingConfig"
+): Object {
+	const name = !config.includes(".json") ? `${config}.json` : config;
+
+	if (!fileExists(path(["configs", name]))) write("{ }", ["configs", name]);
+	return JSON.parse(fetchContent(["configs", name]));
+}
+
+export function updateConfig(
+	data: [string, any], // [Name, Data: <any>]
+	config: string = "editingConfig"
+) {
+	const name = !config.includes(".json") ? `${config}.json` : config;
+	const cached = Object.assign(fetchSavedConfig(), {
+		[data[0]]: data[1]
+	});
+
+	write(JSON.stringify(cached, null, 2), ["configs", name])
+}
+
 export class Builder {
-	fetchSavedConfig(
-		config: string = "editingConfig"
-	): Object {
-		const name = !config.includes(".json") ? `${config}.json` : config;
-
-		if (!fileExists(path(["configs", name]))) write("{ }", ["configs", name]);
-		return JSON.parse(fetchContent(["configs", name]));
-	}
-
-	updateConfig(
-		data: [string, any], // [Name, Data: <any>]
-		config: string = "editingConfig"
-	) {
-		const name = !config.includes(".json") ? `${config}.json` : config;
-		const cached = Object.assign(this.fetchSavedConfig(), {
-			[data[0]]: data[1]
-		});
-
-		write(JSON.stringify(cached, null, 2), ["configs", name])
-	}
-
 	buildConfig(
 		data: Object
 	) {
@@ -42,7 +42,7 @@ export class Builder {
 			console.log("[/] Building new Neovize configuration ...");
 
 			const supportedKeys = [
-				"launchermessage"
+				"launchermessage", "dashboardmessage"
 			]
 
 			for (const [key, value] of Object.entries(data)) {
@@ -89,6 +89,6 @@ export class Builder {
 	changeLauncherMessage(
 		content: string
 	) {
-		this.updateConfig(["launcherMessage", content]);
+		updateConfig(["launcherMessage", content]);
 	}
 }
