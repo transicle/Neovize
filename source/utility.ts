@@ -34,3 +34,27 @@ export function textToAscii(
         });
     });
 }
+
+export function merge(
+    target: any,
+    source: any
+): any {
+    for (const key in source) {
+        const sourceVal = source[key];
+        let targetVal = target[key];
+        if (sourceVal && typeof sourceVal === "object" && !Array.isArray(sourceVal)) {
+            if (!targetVal || typeof targetVal !== "object") {
+                target[key] = {};
+                targetVal = target[key];
+            }
+            
+            merge(targetVal, sourceVal);
+        } else if (Array.isArray(sourceVal)) {
+            target[key] = Array.isArray(targetVal)
+                ? [...targetVal, ...sourceVal.filter((value: any) => !targetVal.includes(value))]
+                : [...sourceVal];
+        } else target[key] = sourceVal;
+    }
+
+    return target;
+}

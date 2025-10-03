@@ -1,33 +1,34 @@
 /*
 
-	      Neovize ~ A JavaScript Neovim configuration handler
+		  Neovize ~ A JavaScript Neovim configuration handler
 	~ Support us on GitHub @ https://github.com/transicle/Neovize ~
 
 */
 
 import { fetchContent, fileExists, path, write } from "../fileManager.js";
+import type { Config } from "../types.js";
+import { merge } from "../utility.js";
 import { init, overrideAutoCommand, saveOldConfig } from "../Vim/Vim.js";
 import { Dashboard } from "./Dashboard.js";
 
 export function fetchSavedConfig(
 	config: string = "editingConfig"
-): Object {
+): Config {
 	const name = !config.includes(".json") ? `${config}.json` : config;
 
-	if (!fileExists(path(["configs", name]))) write("{ }", ["configs", name]);
-	return JSON.parse(fetchContent(["configs", name]));
+	if (!fileExists(path(["configs", name])) || fetchContent(["configs", name]).trim() === "") write("{ }", ["configs", name]);
+	return JSON.parse(fetchContent(["configs", name])) as Config;
 }
 
-export function updateConfig(
-	data: [string, any], // [Name, Data: <any>]
+export function updateConfig<K extends keyof Config>(
+	data: [K, any],
 	config: string = "editingConfig"
 ) {
 	const name = !config.includes(".json") ? `${config}.json` : config;
-	const cached = Object.assign(fetchSavedConfig(), {
-		[data[0]]: data[1]
-	});
+	const cached: Config = fetchSavedConfig();
 
-	write(JSON.stringify(cached, null, 2), ["configs", name])
+	merge(cached, { [data[0]]: data[1] });
+	write(JSON.stringify(cached, null, 2), ["configs", name]);
 }
 
 export class Builder {
@@ -84,7 +85,7 @@ export class Builder {
 	 * 
 	 * Changes the message you see in the commandline when you first launch Neovim.
 	 * 
-	 * @warning This does **not** change the main default message! Use **changeDashboardMessage** for that.
+	 * @warning This does **not** change the main default message! Use the **`DashboardController`** class for that.
 	 */
 	changeLauncherMessage(
 		content: string

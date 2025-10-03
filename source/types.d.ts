@@ -1,3 +1,15 @@
+export type Config = {
+    "launcherMessage": string,
+    "dashboard": {
+        "message": string,
+        "buttons": Record<string, {
+            text: string,
+            action: string
+        }>;
+    },
+    [key: string]: any;
+}
+
 export type AsciiArtFonts =
   | "Standard"
   | "Block"
