@@ -22,6 +22,8 @@ Dashboard.changeMessage("hi2 :)");
 Dashboard.addButton("Open Folder", "openfolder", 1);
 Dashboard.addButton("Open File", "openfile", 2);
 
+Dashboard.alignButtons(1, "auto", 2, 1);
+
 Dashboard.saveButtons();
 
 // Finalize and Build

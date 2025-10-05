@@ -1,15 +1,9 @@
 import { write } from "../fileManager.js";
 import type { AsciiArtFonts } from "../types.js";
 import { textToAscii } from "../utility.js";
+import { installPackage } from "../Vim/packageManager.js";
 import { fetchSavedConfig, updateConfig } from "./Constructor.js";
 
-/**
- * 
- *  Neovim Dashboard manager powered by **Alpha.nvim**,
- *               made easy with Neovize
- * 
- * @GitHub https://github.com/goolord/alpha-nvim
- */
 export class Dashboard {
     /**
      * 
@@ -99,7 +93,16 @@ export class Dashboard {
         horizontalSpacing: number = 2,
         verticalSpacing: number = 1
     ) {
+        const config = fetchSavedConfig();
+        config.dashboard = {
+            ...config.dashboard,
+            alignment: {
+                gridWidth, gridHeight,
+                horizontalSpacing, verticalSpacing
+            }
+        }
 
+        write(JSON.stringify(config, null, 2), ["configs", "editingConfig.json"]);
     }
 
     /**
@@ -109,6 +112,8 @@ export class Dashboard {
      * @warning All buttons left unsaved will not be applied when building your configuration.
      */
     saveButtons() {
+        installPackage("https://github.com/goolord/alpha-nvim");
+
         const config = fetchSavedConfig();
         config.dashboard = {
             ...config.dashboard,

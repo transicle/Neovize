@@ -43,7 +43,7 @@ export class Builder {
 			console.log("[/] Building new Neovize configuration ...");
 
 			const supportedKeys = [
-				"launchermessage", "dashboardmessage"
+				"launchermessage", "dashboard"
 			]
 
 			for (const [key, value] of Object.entries(data)) {
@@ -54,7 +54,9 @@ export class Builder {
 							this.updateNeovimOutput(overrideAutoCommand("\"VimEnter\"", `print(\"${value}\")`));
 							console.log(`[!] Set "${key}" key to "${value}".`);
 							break;
-						case "dashboardmessage":
+						case "dashboard":
+							
+							console.log(`[!] Applied all changes to the dashboard.`);
 							break;
 					}
 				}

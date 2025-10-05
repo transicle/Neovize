@@ -5,8 +5,15 @@ export type Config = {
         "buttons": Record<string, {
             text: string,
             action: string
-        }>;
+        }>,
+        "alignment": {
+            gridWidth: number,
+            gridHeight: string | number,
+            horizontalSpacing: number,
+            verticalSpacing: number
+        }
     },
+    "packages": Array<string>,
     [key: string]: any;
 }
 

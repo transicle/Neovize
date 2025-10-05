@@ -3,7 +3,7 @@ import type { AsciiArtFonts } from "./types.js";
 
 /**
  * 
- * Alternative to the **`.pop`** method on Arrays, but returning
+ * Alternative to the **`.push`** method on Arrays, but returning
  *  an Array object instead of a number.
  */
 export function append<T>(
