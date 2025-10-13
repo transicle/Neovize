@@ -1,12 +1,12 @@
 {
-	"name": "Neovim-config-helper",
+	"name": "neovize",
 	"version": "1.0.0-alpha",
 	"description": "A user friendly Neovim config builder that writes configs in Lua",
 	"type": "module",
 	"scripts": {
 		"build": "npx tsc",
 		"launch": "node build/index.js",
-		"dev": "clear ; pnpm run build ; pnpm run launch"
+		"dev": "clear ; bash scripts/clearConfigs.sh ; pnpm run build ; pnpm run launch"
 	},
 	"keywords": [],
 	"author": "lily",

@@ -25,7 +25,7 @@ export function isPackageInstalled(
 export function installPackage(
     URL: string
 ) {
-    const newPackage = URL.toLowerCase().replace("https://github.com/", "")
+    const newPackage = URL.toLowerCase().replace("https://github.com/", "");
     if (!isPackageInstalled(newPackage)) {
         updateConfig(["packages", [...fetchSavedConfig().packages, newPackage]]);
         console.log(`[~] Added package: "${newPackage}"`);

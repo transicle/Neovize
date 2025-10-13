@@ -43,7 +43,7 @@ export class Builder {
 			console.log("[/] Building new Neovize configuration ...");
 
 			const supportedKeys = [
-				"launchermessage", "dashboard"
+				"launchermessage", "dashboard", "packages"
 			]
 
 			for (const [key, value] of Object.entries(data)) {
