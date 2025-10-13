@@ -17,7 +17,7 @@ const Dashboard = new Constructor.DashboardController();
 Constructor.changeLauncherMessage("Close Neovim using :q ~ Learn more using :help ~ Use commands using :");
 
 // Dashboard Customizer
-Dashboard.changeMessage("Neovize", true);
+Dashboard.changeMessage("Neovize");
 
 Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 2);
 
