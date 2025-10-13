@@ -19,10 +19,7 @@ Constructor.changeLauncherMessage("Close Neovim using :q ~ Learn more using :hel
 // Dashboard Customizer
 Dashboard.changeMessage("Neovize");
 
-Dashboard.addButton("f", "Open Folder", "Ex<CR>", 1);
 Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 2);
-
-Dashboard.alignButtons(1, "auto", 2, 1);
 
 Dashboard.changeFooter("Neovim styled beautifully using JavaScript");
 

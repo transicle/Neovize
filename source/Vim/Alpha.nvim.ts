@@ -15,12 +15,16 @@ export function translateConfiguration(
     const content = fetchSavedConfig(config);
     const dashboard = content.dashboard;
 
+    source += "-- @Neovize/Alpha.nvim/Header --\n\n";
+    source += "dashboard.section.header.opts = {\n    position = \"center\"\n}\n\n";
     if (dashboard.message && dashboard.message.trim() !== "") {
-        source += `dashboard.section.header.val = {\n   "${dashboard.message}"\n}\n\n`;
+        source += `dashboard.section.header.val = {\n   "${dashboard.message}"\n}\n\n\n`;
     } else {
-        source += "dashboard.section.header.val = { }\n\n";
+        source += "dashboard.section.header.val = { }\n\n\n";
     }
 
+    source += "-- @Neovize/Alpha.nvim/Buttons --\n\n";
+    source += "dashboard.section.buttons.opts = {\n    position = \"center\"\n}\n\n";
     if (dashboard.buttons && Object.keys(dashboard.buttons).length > 0) {
         let table = "dashboard.section.buttons.val = {\n";
         const entries = Object.values(dashboard.buttons);
@@ -29,12 +33,14 @@ export function translateConfiguration(
             table += `    dashboard.button("${values.keybind}", "${values.text}", ":${values.action.replace(/^:/, "")}")${comma}\n`;
         });
 
-        table += "}\n\n";
+        table += "}\n\n\n";
         source += table;
     } else {
-        source += "dashboard.section.buttons.val = { }\n\n";
+        source += "dashboard.section.buttons.val = { }\n\n\n";
     }
 
+    source += "-- @Neovize/Alpha.nvim/Footer --\n\n";
+    source += "dashboard.section.footer.opts = {\n    position = \"center\"\n}\n\n";
     if (dashboard.footer && dashboard.footer.trim() !== "") {
         source += `dashboard.section.footer.val = {\n    "${dashboard.footer}"\n}`;
     } else {

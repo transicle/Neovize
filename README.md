@@ -14,11 +14,6 @@
       "verticalSpacing": 1
     },
     "buttons": {
-      "Button1": {
-        "keybind": "f",
-        "text": "Open Folder",
-        "action": "Ex<CR>"
-      },
       "Button2": {
         "keybind": "e",
         "text": "New File",
