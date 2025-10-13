@@ -14,15 +14,17 @@ const Constructor = new Builder();
 const Dashboard = new Constructor.DashboardController();
 
 // Simple Stuff
-Constructor.changeLauncherMessage("meowvim :3");
+Constructor.changeLauncherMessage("Close Neovim using :q ~ Learn more using :help ~ Use commands using :");
 
 // Dashboard Customizer
-Dashboard.changeMessage("hi2 :)");
+Dashboard.changeMessage("Neovize");
 
-Dashboard.addButton("Open Folder", "openfolder", 1);
-Dashboard.addButton("Open File", "openfile", 2);
+Dashboard.addButton("f", "Open Folder", "Ex<CR>", 1);
+Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 2);
 
 Dashboard.alignButtons(1, "auto", 2, 1);
+
+Dashboard.changeFooter("Neovim styled beautifully using JavaScript");
 
 Dashboard.saveButtons();
 

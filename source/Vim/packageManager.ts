@@ -31,3 +31,22 @@ export function installPackage(
         console.log(`[~] Added package: "${newPackage}"`);
     }
 }
+
+/**
+ * Generate a Lua require block for a package.
+ * 
+ * Automatically extracts the plugin name from GitHub-style repository strings.
+ * 
+ * @param repo GitHub repo string, e.g. "goolord/alpha-nvim".
+ * @param body Optional Lua code to put inside the `if ok then` block.
+ */
+export function importPackage(
+    repository: string,
+    body: string = ""
+): string {
+    const plugin = repository.split("/")[1]!.split("-")[0];
+    return `local ok, ${plugin} = pcall(require, "${plugin}")
+if ok then
+${body.split("\n").map(line => "    " + line).join("\n")}
+end\n`;
+}

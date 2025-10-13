@@ -1,9 +1,12 @@
+> [!TIP]
+> Neovize currently only supports Lua outputs. Possibly in the future, **VimScript** will also be added.
+
 # Example Configuration
 ```json
 {
-  "launcherMessage": "meowvim :3",
+  "launcherMessage": "Close Neovim using :q ~ Learn more using :help ~ Use commands using :",
   "dashboard": {
-    "message": "hi2 :)",
+    "message": "Neovize",
     "alignment": {
       "gridWidth": 1,
       "gridHeight": "auto",
@@ -12,14 +15,17 @@
     },
     "buttons": {
       "Button1": {
+        "keybind": "f",
         "text": "Open Folder",
-        "action": "openfolder"
+        "action": "Ex<CR>"
       },
       "Button2": {
-        "text": "Open File",
-        "action": "openfile"
+        "keybind": "e",
+        "text": "New File",
+        "action": "ene <BAR> startinsert<CR>"
       }
-    }
+    },
+    "footer": "Neovim styled beautifully using JavaScript"
   },
   "packages": [
     "goolord/alpha-nvim"

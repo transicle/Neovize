@@ -43,6 +43,32 @@ export function saveOldConfig() {
 
 export const init = append(fetchNeovimConfigPath(), "init.lua");
 
+// Packages
+/**
+ * 
+ * Overrides an existing package with new data if it exists. If not, it will write new data about the package.
+ * 
+ * @param block The block that shouild be overriden or written.
+ * @param plugin Name of the plugin that it'll check for.
+ */
+export function overridePackage(
+    block: string,
+    plugin: string
+): string {
+    const content = fetchContent(init);
+    const regex = new RegExp(`local ok,\\s*${plugin}\\s*=\\s*pcall\\(require,\\s*["']${plugin}["']\\)[\\s\\S]*?end\\n?`, "m");
+    const match = content.match(regex);
+    if (match) {
+        if (match[0].trim() !== block.trim()) {
+            return content.replace(regex, `${block}\n`);
+        } else {
+            return content;
+        }
+    } else {
+        return `${content}\n${block}\n`;
+    }
+}
+
 // Auto Commands
 /**
  * 
@@ -61,7 +87,7 @@ export function newAutoCommand(
     callback = function()
         ${callback}
     end
-})`
+})\n`
 }
 
 /**

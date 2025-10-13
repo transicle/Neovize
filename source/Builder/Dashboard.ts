@@ -23,6 +23,14 @@ export class Dashboard {
         }]);
     }
 
+    changeFooter(
+        content: string
+    ) {
+        updateConfig(["dashboard", {
+            "footer": content
+        }]);
+    }
+
     // Button Manager
     /**
      * 
@@ -31,14 +39,16 @@ export class Dashboard {
      * @note Buttons will automatically be aligned on the Y axis. Override this using the **`alignButtons`** method.
      * @warning To save buttons, use the **`saveButtons()`** method.
      */
-    private pendingButtons: {[key: string]: { text: string, action: string } } = {};
+    private pendingButtons: {[key: string]: { keybind: string, text: string, action: string } } = {};
     addButton(
+        keybind: string,
         content: string,
         action: string,
         index: number
     ) {
         // const nextIndex = Object.keys(this.pendingButtons).length + 1;
         this.pendingButtons[`Button${index}`] = {
+            keybind: keybind,
             text: content,
             action
         };

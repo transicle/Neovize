@@ -3,6 +3,7 @@ export type Config = {
     "dashboard": {
         "message": string,
         "buttons": Record<string, {
+            keybind: string,
             text: string,
             action: string
         }>,
@@ -11,7 +12,8 @@ export type Config = {
             gridHeight: string | number,
             horizontalSpacing: number,
             verticalSpacing: number
-        }
+        },
+        "footer": string
     },
     "packages": Array<string>,
     [key: string]: any;
