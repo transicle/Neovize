@@ -10,6 +10,8 @@ import { importPackage } from "./packageManager.js";
 export function translateConfiguration(
     config: string = "editingConfig"
 ): string {
+    // This function is a huge mess, but luckily this'll only need to be finished one time.
+
     let source = "";
 
     const content = fetchSavedConfig(config);
@@ -42,10 +44,31 @@ export function translateConfiguration(
     source += "-- @Neovize/Alpha.nvim/Footer --\n\n";
     source += "dashboard.section.footer.opts = {\n    position = \"center\"\n}\n\n";
     if (dashboard.footer && dashboard.footer.trim() !== "") {
-        source += `dashboard.section.footer.val = {\n    "${dashboard.footer}"\n}`;
+        source += `dashboard.section.footer.val = {\n    "${dashboard.footer}"\n}\n\n\n`;
     } else {
-        source += "dashboard.section.footer.val = { }";
+        source += "dashboard.section.footer.val = { }\n\n\n";
     }
+
+    // Vertical Centering after Horizontal
+
+    source += `local padding = math.floor((vim.fn.winheight(0) - (#dashboard.section.header.val + #dashboard.section.buttons.val + #dashboard.section.footer.val + 8)) / 2)\n\n`;
+    source += `dashboard.config.layout = {
+        {
+            type = "padding",
+            val = padding
+        },
+        dashboard.section.header,
+        {
+            type = "padding",
+            val = 2
+        },
+        dashboard.section.buttons,
+        {
+            type = "padding",
+            val = 2
+        },
+        dashboard.section.footer
+    }`;
 
     return source;
 }
