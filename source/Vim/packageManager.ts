@@ -34,6 +34,14 @@ export function installPackage(
     }
 }
 
+/**
+ * 
+ * Returns the block of Lua code to install plugins without a plugin manager.
+ * 
+ * Made possible using Neovim's built-in "packadd" and modules for executing commands.
+ * 
+ * @note This shouldn't be used standalone. This module is used alongside `importPackage` for downloading plugins.
+ */
 export function createPackageInstaller(
     URL: string
 ): string {
@@ -50,6 +58,33 @@ end`;
 }
 
 /**
+ * 
+ * @async
+ * 
+ * Search a **GitHub** repository for the plugin's initialization file.
+ * 
+ * The search result is the correct string which'll be used for the plugin's import.
+ * 
+ * @note Plugins written in VimScript are not supported. Only use plugins written in Lua that have a `**"lua"**` folder located in the root directory.
+ */
+export async function fetchPluginName(
+    repository: string
+): Promise<string> {
+    const response = await fetch(`https://api.github.com/repos/${repository}/contents/lua`);
+    if (!response.ok) {
+        throw new Error(`[!] Failed to retrice the plugin's name, responded with code: ${response.status}`);
+    }
+
+    const data = await response.json() as { name: string }[]
+    const file = data.find((found: any) => found.name.endsWith(".lua"));
+    
+    return file ? file.name : "init.lua";
+}
+
+/**
+ * 
+ * @async
+ * 
  * Generate a Lua require block for a package.
  * 
  * Automatically extracts the plugin name from GitHub-style repository strings.
@@ -57,17 +92,18 @@ end`;
  * @param repo GitHub repo string, e.g. "goolord/alpha-nvim".
  * @param body Optional Lua code to put inside the `if ok then` block.
  */
-export function importPackage(
+export async function importPackage(
     repository: string,
     body: string = ""
-): string {
+): Promise<string> {
     const URL = `https://github.com/${repository}`;
     const pluginName = repository.split("/")[1]!.split(".")[0]!.replace(/\.git$/, "");
     const pluginVar = pluginName.replaceAll(".", "_").replaceAll("-", "_");
+    const toRequire = (await fetchPluginName(repository)).replace(".lua", "");
 
     installPackage(URL);
     return `${createPackageInstaller(URL)}\n
-local ok, __${pluginVar} = pcall(require, "${pluginName}")
+local ok, __${pluginVar} = pcall(require, "${toRequire}")
 if ok then
 ${body.split("\n").map(line => "    " + line).join("\n")}
 end`;

@@ -55,7 +55,13 @@ export function updateConfig<K extends keyof Config>(
  * Neovize's main construction class. Configure your entire Neovize configuration using this class.
  */
 export class Builder {
-	buildConfig() {
+	/**
+	 * 
+	 * @async
+	 * 
+	 * Translates your Neovize configuration file into a legible, easy to read Neovim `**init.lua**` file, automatically applied to Neovim.
+	 */
+	async buildConfig() {
 		const data = fetchSavedConfig();
 		if (Object.keys(data).length === 0) {
 			console.log("[!] Your config cannot be empty. ~");
@@ -77,7 +83,7 @@ export class Builder {
 							console.log(`[!] Set "${key}" key to "${value}".`);
 							break;
 						case "dashboard":
-							this.updateNeovimOutput(overridePackage(importAlpha(), "goolord/alpha-nvim"));
+							this.updateNeovimOutput(overridePackage(await importAlpha(), "goolord/alpha-nvim"));
 							console.log(`[!] Applied all changes to the dashboard.`);
 							break;
 					}
@@ -124,15 +130,17 @@ export class Builder {
 	private packageData: string[][] = [];
 	/**
 	 * 
+	 * @async
+	 * 
 	 * Install a custom package not natively included in Neovize using the Neovize Plugin Manager (NPM).
 	 * 
 	 * @note As of **October 10th, 2025**: Only **GitHub** repositories are supported. 
 	 */
-	downloadPackage(
+	async downloadPackage(
 		repository: string,
 		body: string = ""
 	) {
-		const details = importPackage(repository, body);
+		const details = await importPackage(repository, body);
 
 		this.packageData.push([repository, details]);
 		console.log(`[!] Successfully downloaded package: "${repository}"`);

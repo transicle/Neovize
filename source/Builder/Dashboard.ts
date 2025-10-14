@@ -13,6 +13,8 @@ import { fetchSavedConfig, updateConfig } from "./Constructor.js";
 export class Dashboard {
     /**
      * 
+     * @async
+     * 
      * Changes the center-most text you see in Neovim when no
      *  file is opened.
      * 

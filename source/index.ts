@@ -30,9 +30,9 @@ Dashboard.saveButtons();
 
 // Packages
 
-Constructor.downloadPackage("nvim-tree/nvim-tree.lua", `__nvim_tree.setup()`);
+await Constructor.downloadPackage("nvim-tree/nvim-tree.lua", `__nvim_tree.setup()`);
 
 
 // Finalize and Build
 
-Constructor.buildConfig();
+await Constructor.buildConfig();

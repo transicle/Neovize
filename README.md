@@ -4,27 +4,34 @@
 # Example Configuration
 ```json
 {
-  "launcherMessage": "Learn Neovim using :help ~ Use commands using :",
   "dashboard": {
     "footer": "Neovim configuration made simple using JavaScript.",
     "buttons": {
-      "Button2": {
+      "Button1": {
         "keybind": "e",
         "text": "New File",
         "action": "ene <BAR> startinsert<CR>"
+      },
+      "Button2": {
+        "keybind": "l",
+        "text": "Open Previous",
+        "action": "e#<CR>"
       }
     },
     "message": [
-      "    _   __                _          ",
-      "   / | / /__  ____ _   __(_)___  ___ ",
-      "  /  |/ / _ \\/ __ \\ | / / /_  / / _ \\",
-      " / /|  /  __/ /_/ / |/ / / / /_/  __/",
-      "/_/ |_/\\___/\\____/|___/_/ /___/\\___/ ",
-      "                                     "
+      " #     #                                      ",
+      " ##    # ######  ####  #    # # ###### ###### ",
+      " # #   # #      #    # #    # #     #  #      ",
+      " #  #  # #####  #    # #    # #    #   #####  ",
+      " #   # # #      #    # #    # #   #    #      ",
+      " #    ## #      #    #  #  #  #  #     #      ",
+      " #     # ######  ####    ##   # ###### ###### ",
+      "                                              "
     ]
   },
   "packages": [
-    "goolord/alpha-nvim"
+    "goolord/alpha-nvim",
+    "nvim-tree/nvim-tree.lua"
   ]
 }
 ```
@@ -32,4 +39,4 @@
 ---
 
 # Preview
-<img width="806" height="536" alt="image" src="https://github.com/user-attachments/assets/ad8f4aed-2ed7-49cf-89f2-84de6f3a256d" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6db23983-e87c-41d6-bc2b-c5992ec6dd20" />
