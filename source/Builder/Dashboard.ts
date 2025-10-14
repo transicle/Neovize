@@ -4,6 +4,12 @@ import { textToAscii } from "../utility.js";
 import { installPackage } from "../Vim/packageManager.js";
 import { fetchSavedConfig, updateConfig } from "./Constructor.js";
 
+/**
+ * 
+ * Neovize's dashboard handler, powered by **Alpha.nvim**.
+ * 
+ * Easily design a beautiful Neovim dashboard using the built in methods for this class.
+ */
 export class Dashboard {
     /**
      * 

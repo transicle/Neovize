@@ -7,7 +7,7 @@
  * 
  */
 
-import { Builder, fetchSavedConfig } from "./Builder/Constructor.js";
+import { Builder } from "./Builder/Constructor.js";
 
 
 // Managers
@@ -18,7 +18,7 @@ const Dashboard = new Constructor.DashboardController();
 
 // Dashboard Customizer
 
-Dashboard.changeMessage(["Neovize"], true, "Slant");
+Dashboard.changeMessage(["Neovize"], true, "Banner");
 
 Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 1);
 Dashboard.addButton("l", "Open Previous", "e#<CR>", 2);
@@ -28,6 +28,11 @@ Dashboard.changeFooter("Neovim configuration made simple using JavaScript.");
 Dashboard.saveButtons();
 
 
+// Packages
+
+Constructor.downloadPackage("nvim-tree/nvim-tree.lua", `__nvim_tree.setup()`);
+
+
 // Finalize and Build
 
-Constructor.buildConfig(fetchSavedConfig());
+Constructor.buildConfig();

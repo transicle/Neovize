@@ -29,7 +29,24 @@ export function installPackage(
     if (!isPackageInstalled(newPackage)) {
         updateConfig(["packages", [...fetchSavedConfig().packages, newPackage]]);
         console.log(`[~] Added package: "${newPackage}"`);
+    } else {
+        console.log(`[!] Package "${newPackage}" already installed.`);
     }
+}
+
+export function createPackageInstaller(
+    URL: string
+): string {
+    return `-- @Neovize/Packages ~ "${URL}" --
+do
+    local installPath = vim.fn.stdpath("config") .. "/pack/plugins/start/" .. (("${URL}"):match(".*/(.-)%.git$") or ("${URL}"):match(".*/(.-)$"))
+    if vim.fn.empty(vim.fn.glob(installPath)) > 0 then
+        vim.fn.system({ "git", "clone", "--depth=1", "${URL}", installPath })
+        vim.cmd("packadd " .. (("${URL}"):match(".*/(.-)%.git$") or ("${URL}"):match(".*/(.-)$")))
+    end
+
+    vim.opt.rtp:prepend(installPath)
+end`;
 }
 
 /**
@@ -44,9 +61,14 @@ export function importPackage(
     repository: string,
     body: string = ""
 ): string {
-    const plugin = repository.split("/")[1]!.split("-")[0];
-    return `local ok, ${plugin} = pcall(require, "${plugin}")
+    const URL = `https://github.com/${repository}`;
+    const pluginName = repository.split("/")[1]!.split(".")[0]!.replace(/\.git$/, "");
+    const pluginVar = pluginName.replaceAll(".", "_").replaceAll("-", "_");
+
+    installPackage(URL);
+    return `${createPackageInstaller(URL)}\n
+local ok, __${pluginVar} = pcall(require, "${pluginName}")
 if ok then
 ${body.split("\n").map(line => "    " + line).join("\n")}
-end\n`;
+end`;
 }

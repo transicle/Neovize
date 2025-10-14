@@ -72,5 +72,5 @@ export function translateConfiguration(
  * Returns the Alpha.nvim package with the dashboard config relative to your configuration file.
  */
 export function importAlpha(): string {
-    return importPackage("goolord/alpha-nvim", `local dashboard = require(\"alpha.themes.dashboard\")\n\n${translateConfiguration()}\n\nalpha.setup(dashboard.config)`);
+    return importPackage("goolord/alpha-nvim", `local dashboard = require(\"alpha.themes.dashboard\")\n\n${translateConfiguration()}\n\n__alpha_nvim.setup(dashboard.config)`);
 }

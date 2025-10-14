@@ -56,17 +56,13 @@ export function overridePackage(
     plugin: string
 ): string {
     const content = fetchContent(init);
-    const regex = new RegExp(`local ok,\\s*${plugin}\\s*=\\s*pcall\\(require,\\s*["']${plugin}["']\\)[\\s\\S]*?end\\n?`, "m");
+    const pluginName = plugin.split("/")[1]!.replace(/\.git$/, "");
+    const pluginVar = pluginName.replaceAll(".", "_").replaceAll("-", "_");
+    const regex = new RegExp(`-- @Neovize/Packages ~ ["'].*${plugin}.*["'] --[\\s\\S]*?end\\n?\\n?local ok,\\s*__${pluginVar}\\s*=\\s*pcall\\(require,\\s*["']${pluginName}["']\\)[\\s\\S]*?end`, "m");
     const match = content.match(regex);
-    if (match) {
-        if (match[0].trim() !== block.trim()) {
-            return content.replace(regex, `${block}\n`);
-        } else {
-            return content;
-        }
-    } else {
-        return `${content}\n${block}\n`;
-    }
+
+    console.log(`[~] ${match ? "Matched a" : "No match for a"} duplicated package.`);
+    return match ? content.replace(regex, block) : `${content}\n\n${block}\n\n`;
 }
 
 // Auto Commands
