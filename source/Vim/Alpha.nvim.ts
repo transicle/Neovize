@@ -10,68 +10,62 @@ import { importPackage } from "./packageManager.js";
 export function translateConfiguration(
     config: string = "editingConfig"
 ): string {
-    // This function is a huge mess, but luckily this'll only need to be finished one time.
-
-    let source = "";
-
     const content = fetchSavedConfig(config);
     const dashboard = content.dashboard;
 
+    const renderArray = (array?: string[]) => array && array.length ? `\n   ${array
+        .map(message => `"${message.replace(/\\/g, "\\\\")}"`)
+        .join(",\n   ")}\n` : "";
+         
+    const renderFooter = (footer?: string) => footer && footer.trim() !== "" ? `\n    "${footer}"\n` : "";
+    const renderButtons = (buttons?: Record<string, {
+        keybind: string,
+        text: string,
+        action: string
+    }>) => {
+        if (!buttons || Object.keys(buttons).length === 0) return " { }\n\n\n";
+        return ` = {\n${Object.values(buttons)
+            .map((button, index, array) => `    dashboard.button("${button.keybind}", "${button.text}", ":${button.action.replace(/^:/, "")}")${index < array.length - 1 ? "," : ""}`)
+            .join("\n")}\n}\n\n\n`;
+    };
+
+    let source = "";
+
     source += "-- @Neovize/Alpha.nvim/Header --\n\n";
     source += "dashboard.section.header.opts = {\n    position = \"center\"\n}\n\n";
-    if (dashboard.message && dashboard.message.trim() !== "") {
-        source += `dashboard.section.header.val = {\n   "${dashboard.message}"\n}\n\n\n`;
-    } else {
-        source += "dashboard.section.header.val = { }\n\n\n";
-    }
+    source += `dashboard.section.header.val = {${renderArray(dashboard.message)}}\n\n\n`;
 
     source += "-- @Neovize/Alpha.nvim/Buttons --\n\n";
     source += "dashboard.section.buttons.opts = {\n    position = \"center\"\n}\n\n";
-    if (dashboard.buttons && Object.keys(dashboard.buttons).length > 0) {
-        let table = "dashboard.section.buttons.val = {\n";
-        const entries = Object.values(dashboard.buttons);
-        entries.forEach((values, index) => {
-            const comma = index < entries.length - 1 ? "," : "";
-            table += `    dashboard.button("${values.keybind}", "${values.text}", ":${values.action.replace(/^:/, "")}")${comma}\n`;
-        });
-
-        table += "}\n\n\n";
-        source += table;
-    } else {
-        source += "dashboard.section.buttons.val = { }\n\n\n";
-    }
+    source += `dashboard.section.buttons.val${renderButtons(dashboard.buttons)}`;
 
     source += "-- @Neovize/Alpha.nvim/Footer --\n\n";
     source += "dashboard.section.footer.opts = {\n    position = \"center\"\n}\n\n";
-    if (dashboard.footer && dashboard.footer.trim() !== "") {
-        source += `dashboard.section.footer.val = {\n    "${dashboard.footer}"\n}\n\n\n`;
-    } else {
-        source += "dashboard.section.footer.val = { }\n\n\n";
-    }
-
-    // Vertical Centering after Horizontal
+    source += `dashboard.section.footer.val = {${renderFooter(dashboard.footer)}}\n\n\n`;
 
     source += `local padding = math.floor((vim.fn.winheight(0) - (#dashboard.section.header.val + #dashboard.section.buttons.val + #dashboard.section.footer.val + 8)) / 2)\n\n`;
+
     source += `dashboard.config.layout = {
-        {
-            type = "padding",
-            val = padding
-        },
-        dashboard.section.header,
-        {
-            type = "padding",
-            val = 2
-        },
-        dashboard.section.buttons,
-        {
-            type = "padding",
-            val = 2
-        },
-        dashboard.section.footer
-    }`;
+    {
+        type = "padding",
+        val = padding
+    },
+    dashboard.section.header,
+    {
+        type = "padding",
+        val = 2
+    },
+    dashboard.section.buttons,
+    {
+        type = "padding",
+        val = 2
+    },
+    dashboard.section.footer
+}`;
 
     return source;
 }
+
 
 /**
  * 

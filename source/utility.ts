@@ -20,17 +20,17 @@ export function append<T>(
 export function textToAscii(
     content: string,
     font: AsciiArtFonts = "Standard"
-): Promise<string> {
+): Promise<string[]> {
     return new Promise((resolve, reject) => {
         figlet.text(content, {
-            font: font,
+            font,
             horizontalLayout: "default",
             verticalLayout: "default",
             width: 80,
             whitespaceBreak: true
         }, (issue, result) => {
-            if (issue) reject(issue);
-            else resolve(result || "");
+            if (issue) return reject(issue);
+            resolve((result || "").split("\n"));
         });
     });
 }
