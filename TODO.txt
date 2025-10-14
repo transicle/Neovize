@@ -1,0 +1,2 @@
+1. Work on making plugins properly work aside from Alpha.nvim.
+2. Add more styling options for the dashboard. (Colors, fonts, etc.)

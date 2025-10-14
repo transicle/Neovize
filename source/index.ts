@@ -9,22 +9,19 @@
 
 import { Builder, fetchSavedConfig } from "./Builder/Constructor.js";
 
+
 // Managers
 
 const Constructor = new Builder();
 const Dashboard = new Constructor.DashboardController();
 
 
-// Simple Stuff
-
-Constructor.changeLauncherMessage("Learn Neovim using :help ~ Use commands using :");
-
-
 // Dashboard Customizer
 
 Dashboard.changeMessage(["Neovize"], true, "Slant");
 
-Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 2);
+Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 1);
+Dashboard.addButton("l", "Open Previous", "e#<CR>", 2);
 
 Dashboard.changeFooter("Neovim configuration made simple using JavaScript.");
 
