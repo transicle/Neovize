@@ -5,7 +5,7 @@
 
 */
 
-import { fetchContent, fileExists, newFolder, path, write } from "../fileManager.js";
+import { fetchContent, fileExists, newFolder, path, remove, write } from "../fileManager.js";
 import type { Config } from "../types.js";
 import { merge } from "../utility.js";
 import { importAlpha } from "../Vim/Alpha.nvim.js";
@@ -80,10 +80,12 @@ export class Builder {
 					switch (key.toLowerCase()) {
 						case "launchermessage":
 							this.updateNeovimOutput(overrideAutoCommand("\"VimEnter\"", `print(\"${value}\")`));
+							
 							console.log(`[!] Set "${key}" key to "${value}".`);
 							break;
 						case "dashboard":
 							this.updateNeovimOutput(overridePackage(await importAlpha(), "goolord/alpha-nvim"));
+
 							console.log(`[!] Applied all changes to the dashboard.`);
 							break;
 					}
@@ -115,17 +117,6 @@ export class Builder {
 	DashboardController = Dashboard;
 
 	// Small configurations, no extra classes needed.
-	/**
-	 * 
-	 * Changes the message you see in the commandline when you first launch Neovim.
-	 * 
-	 * @warning This does **not** change the main default message! Use the **`DashboardController`** class for that.
-	 */
-	changeLauncherMessage(
-		content: string
-	) {
-		updateConfig(["launcherMessage", content]);
-	}
 
 	private packageData: string[][] = [];
 	/**

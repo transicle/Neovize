@@ -80,3 +80,11 @@ export function copyDirectory(
 		}
 	});
 }
+
+export function remove(
+	filePath: string[]
+) {
+	rmSync(path(filePath), {
+		force: true
+	});
+}

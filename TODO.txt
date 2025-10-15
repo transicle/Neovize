@@ -1,1 +1,8 @@
-1. Add more styling options for the dashboard. (Colors, fonts, etc.)
+~ [?] : Optional
+~ [!] : Required
+~ [B] : Bug or Broken feature
+
+1. [?] Fix the ascii art font size changer for the "changeMessage" method in the Dashboard.ts file. 
+2. [!] Add more styling options for the dashboard. (Colors, fonts, etc.)
+3. [!] Make the editing configuration file refresh when updating your configuration.
+4. [B] Look into the bug where 2+ plugins don't show up when auto commands are in-place.

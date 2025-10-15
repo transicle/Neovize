@@ -20,8 +20,8 @@ const Dashboard = new Constructor.DashboardController();
 
 Dashboard.changeMessage(["Neovize"], true, "Banner");
 
-Dashboard.addButton("e", "New File", "ene <BAR> startinsert<CR>", 1);
-Dashboard.addButton("l", "Open Previous", "e#<CR>", 2);
+Dashboard.addButton("Control + C", "New File", "ene <BAR> startinsert<CR>", 1);
+Dashboard.addButton("Alt + O", "Open Previous", "e#<CR>", 2);
 
 Dashboard.changeFooter("Neovim configuration made simple using JavaScript.");
 

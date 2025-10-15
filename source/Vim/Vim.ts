@@ -77,9 +77,10 @@ export function overridePackage(
  */
 export function newAutoCommand(
     name: string,
-    callback: string
+    callback: string,
+    pattern?: string
 ): string {
-    return `vim.api.nvim_create_autocmd(${name}, {
+    return `vim.api.nvim_create_autocmd(${name}, {${pattern ? `\n    pattern = ${pattern},` : ""}
     callback = function()
         ${callback}
     end
@@ -96,15 +97,16 @@ export function newAutoCommand(
  */
 export function overrideAutoCommand(
     autoCommand: string,
-    callback: string
+    callback: string,
+    pattern?: string
 ): string {
     const content = fetchContent(init);
-    const regex = new RegExp(`vim\\.api\\.nvim_create_autocmd\\(\\s*${autoCommand}\\s*,\\s*{[\\s\\S]*?callback\\s*=\\s*function\\([^)]*\\)[\\s\\S]*?end[\\s\\S]*?}\\)`, "m");
+    const regex = new RegExp(`vim\\.api\\.nvim_create_autocmd\\(\\s*${autoCommand}\\s*,\\s*{[\\s\\S]*?(?:pattern\\s*=\\s*[^,]+,\\s*)?[\\s\\S]*?callback\\s*=\\s*function\\([^)]*\\)[\\s\\S]*?end[\\s\\S]*?}\\)`, "m");
     if (regex.test(content)) {
         return content.replace(regex, (match) => {
             return match.replace(/callback\s*=\s*function\([^)]*\)[\s\S]*?end/, `callback = function()\n        ${callback}\n    end`);
         });
     } else {
-        return newAutoCommand(autoCommand, callback);
+        return newAutoCommand(autoCommand, callback, pattern);
     }
 }

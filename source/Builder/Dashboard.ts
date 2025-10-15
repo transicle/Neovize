@@ -1,6 +1,6 @@
 import { write } from "../fileManager.js";
 import type { AsciiArtFonts } from "../types.js";
-import { textToAscii } from "../utility.js";
+import { textToAscii, toNeovimKeybind } from "../utility.js";
 import { installPackage } from "../Vim/packageManager.js";
 import { fetchSavedConfig, updateConfig } from "./Constructor.js";
 
@@ -30,7 +30,7 @@ export class Dashboard {
             current += message;
         }
 
-        const message = !isAsciiArt ? content : await textToAscii(current, ArtFont);
+        const message = !isAsciiArt ? content : await textToAscii(current, ArtFont, 80);
         const config = fetchSavedConfig();
         config.dashboard = {
             ...config.dashboard,
@@ -72,7 +72,7 @@ export class Dashboard {
     ) {
         // const nextIndex = Object.keys(this.pendingButtons).length + 1;
         this.pendingButtons[`Button${index}`] = {
-            keybind: keybind,
+            keybind: toNeovimKeybind(keybind),
             text: content,
             action
         };

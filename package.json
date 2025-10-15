@@ -1,6 +1,6 @@
 {
 	"name": "neovize",
-	"version": "1.0.0-alpha",
+	"version": "1.0.5-alpha",
 	"description": "A user friendly Neovim config builder that writes configs in Lua",
 	"type": "module",
 	"scripts": {
